@@ -40,9 +40,9 @@ public class Web3dsActivity extends Activity {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mProgressBar = (ProgressBar) findViewById(R.id.web_3ds_progress_bar);
+        mProgressBar = findViewById(R.id.web_3ds_progress_bar);
         mProgressBar.setMax(100);
-        mWebView = (WebView) findViewById(R.id.web_3ds_web_view);
+        mWebView = findViewById(R.id.web_3ds_web_view);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true); // this lines did not solve 'net::ERR_PROXY_CONNECTION_FAILED' problem

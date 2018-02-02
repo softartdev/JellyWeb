@@ -21,10 +21,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button onWebButton = (Button) findViewById(R.id.main_on_web_button);
+        Button onWebButton = findViewById(R.id.main_on_web_button);
         onWebButton.setOnClickListener(this);
 
-        resultTextView = (TextView) findViewById(R.id.main_result_text_view);
+        Button crosswalkButton = findViewById(R.id.main_crosswalk_button);
+        crosswalkButton.setOnClickListener(this);
+
+        resultTextView = findViewById(R.id.main_result_text_view);
     }
 
     @Override
@@ -33,10 +36,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.main_on_web_button:
                 onWeb();
                 break;
+            case R.id.main_crosswalk_button:
+                onCrosswalk();
+                break;
         }
     }
 
     private void onWeb() {
+        Intent intentWeb = new Intent(this, Web3dsActivity.class);
+        prepareIntent(intentWeb);
+        startActivityForResult(intentWeb, PICK_3DS_REQUEST);
+    }
+
+    private void onCrosswalk() {
+        Intent intentCrosswalk = new Intent(this, CrosswalkActivity.class);
+        prepareIntent(intentCrosswalk);
+        startActivityForResult(intentCrosswalk, PICK_3DS_REQUEST);
+    }
+
+    private void prepareIntent(Intent intent) {
         String acsUrl = "https://web.rbsuat.com/acs/auth/start.do";
         String mdOrder = "b7f03c47-39ed-7fd5-b7f0-3c4700002d0c";
         String paReq = "eJxVkttygjAQhl/F4R5zEFGcNY7HqTPVSsULL2OIwiioEVrK0zdRqPVuv83m382/gUGRnBpfUt3ic9q3SBNbDZmKcxinh761CWZ21xowCCIl5WQtRa4kg4W83fhBNuKwb2F33xKeF9qUOJ7teF7H3oU7z96LnXT3AmNMOhaD1fBTXhlUjZju06SAatSKSkQ8zRhwcR3Nl8yhHRdjQBVCItV8wghtOW230wX0YEh5IlnIM35UPAN0RxDnPM3UD3OdFqAaIFcnFmXZpYdQfaGpckAmD+g5wCo30U3rFHHIFhO/WJbTYlFOySIQZFlu6EdwbOu4D8hUgFaTjGLSxRTTBqE9p9sjHqB7HnhiBmAtbYR5zoPgYpoMX47+p0D7rPQa6jfUBLK4nFOpK7R5fzGg58zjN2OhyLQ5kV/MROR/h8F74m9n1/W0dMaj62pbfHFj7L3IKMbaHuKRh6QBQEYGVTtD1bp19PINfgFeu7tR";
@@ -53,12 +71,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        Intent intentWeb = new Intent(this, Web3dsActivity.class);
-        intentWeb.putExtra(Web3dsActivity.ASC_URL, acsUrl);
-        intentWeb.putExtra(Web3dsActivity.MD_ORDER, encMdOrder);
-        intentWeb.putExtra(Web3dsActivity.PA_REQ, encPaReq);
-        intentWeb.putExtra(Web3dsActivity.TERM_URL, encTermUrl);
-        startActivityForResult(intentWeb, PICK_3DS_REQUEST);
+        intent.putExtra(Web3dsActivity.ASC_URL, acsUrl);
+        intent.putExtra(Web3dsActivity.MD_ORDER, encMdOrder);
+        intent.putExtra(Web3dsActivity.PA_REQ, encPaReq);
+        intent.putExtra(Web3dsActivity.TERM_URL, encTermUrl);
     }
 
     @Override
