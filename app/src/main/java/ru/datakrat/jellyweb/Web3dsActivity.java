@@ -76,7 +76,7 @@ public class Web3dsActivity extends Activity {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.d(TAG,"onReceivedError, errorCode: " + errorCode + ", description: " + description + ", fallingUrl: " + failingUrl);
-            onError();
+            onError(description);
         }
 
         @Override
@@ -117,25 +117,24 @@ public class Web3dsActivity extends Activity {
         }
     }
 
-    private void onError() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
+    private void onError(String description) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this)
                 .setTitle(R.string.error_title)
                 .setMessage(R.string.error_payment_message)
                 .setCancelable(false)
-                .setNegativeButton(android.R.string.yes, (dialog, whichButton) -> dialog.cancel())
-                .create();
-        alertDialog.show();
+                .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> dialog.cancel());
+        if (description != null) {
+            alertBuilder.setMessage(description);
+        }
+        alertBuilder.show();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Check if the key event was the Back button and if there's history
         if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
             mWebView.goBack();
             return true;
         }
-        // If it wasn't the Back key or there's no web page history, bubble up to the default
-        // system behavior (probably exit the activity)
         return super.onKeyDown(keyCode, event);
     }
 
